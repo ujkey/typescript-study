@@ -10,14 +10,18 @@ interface Contact {
   phones: PhoneNumberDictionary;
 }
 
+enum PhoneType {
+  Home = "home",
+  Office = "office",
+  Studio = "studio",
+}
+
 // api
-// TODO: 아래 함수의 반환 타입을 지정해보세요.
-function fetchContacts() {
-  // TODO: 아래 변수의 타입을 지정해보세요.
-  const contacts = [
+function fetchContacts(): Promise<Contact[]> {
+  const contacts: Contact[] = [
     {
-      name: 'Tony',
-      address: 'Malibu',
+      name: "Tony",
+      address: "Malibu",
       phones: {
         home: {
           num: 11122223333,
@@ -28,8 +32,8 @@ function fetchContacts() {
       },
     },
     {
-      name: 'Banner',
-      address: 'New York',
+      name: "Banner",
+      address: "New York",
       phones: {
         home: {
           num: 77788889999,
@@ -37,8 +41,8 @@ function fetchContacts() {
       },
     },
     {
-      name: '마동석',
-      address: '서울시 강남구',
+      name: "마동석",
+      address: "서울시 강남구",
       phones: {
         home: {
           num: 213423452,
@@ -49,51 +53,54 @@ function fetchContacts() {
       },
     },
   ];
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => resolve(contacts), 2000);
   });
 }
 
 // main
 class AddressBook {
-  // TODO: 아래 변수의 타입을 지정해보세요.
-  contacts = [];
+  // 클래스 속성 타입 정의
+  contacts: Contact[] = [];
 
   constructor() {
     this.fetchData();
   }
 
-  fetchData() {
-    fetchContacts().then(response => {
+  fetchData(): void {
+    fetchContacts().then((response: Contact[]) => {
       this.contacts = response;
     });
   }
 
-  /* TODO: 아래 함수들의 파라미터 타입과 반환 타입을 지정해보세요 */
-  findContactByName(name) {
-    return this.contacts.filter(contact => contact.name === name);
+  // 함수 파라미터 타입 정의, 반환 타입 정의
+  findContactByName(name: string): Contact[] {
+    return this.contacts.filter((contact: Contact) => contact.name === name);
   }
 
-  findContactByAddress(address) {
-    return this.contacts.filter(contact => contact.address === address);
-  }
-
-  findContactByPhone(phoneNumber, phoneType: string) {
+  findContactByAddress(address: string): Contact[] {
     return this.contacts.filter(
-      contact => contact.phones[phoneType].num === phoneNumber
+      (contact: Contact) => contact.address === address
     );
   }
 
-  addContact(contact) {
+  // 이넘 타입 정의
+  findContactByPhone(phoneNumber: number, phoneType: PhoneType): Contact[] {
+    return this.contacts.filter(
+      (contact: Contact) => contact.phones[phoneType].num === phoneNumber
+    );
+  }
+
+  addContact(contact: Contact): void {
     this.contacts.push(contact);
   }
 
-  displayListByName() {
-    return this.contacts.map(contact => contact.name);
+  displayListByName(): string[] {
+    return this.contacts.map((contact: Contact) => contact.name);
   }
 
-  displayListByAddress() {
-    return this.contacts.map(contact => contact.address);
+  displayListByAddress(): string[] {
+    return this.contacts.map((contact: Contact) => contact.address);
   }
   /* ------------------------------------------------ */
 }
